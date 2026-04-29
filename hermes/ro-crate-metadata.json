@@ -1,0 +1,123 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context"
+  ],
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "@id": "ro-crate-metadata.json",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "./",
+      "@type": [
+        "Dataset",
+        "Service",
+        "SoftwareApplication"
+      ],
+      "datePublished": "2026-04-28",
+      "URL": "https://github.com/grycap/oscar-agents/tree/main/hermes",
+      "name": "OSCAR Hermes Agent",
+      "description": "OSCAR exposed service that runs the official Hermes Agent Docker image as a persistent browser-accessible dashboard with embedded TUI chat. The service stores Hermes configuration, sessions, memory, skills, and workspace data in a mounted OSCAR volume, while users configure an external or already deployed OpenAI-compatible LLM provider.",
+      "license": {
+        "@id": "https://opensource.org/license/mit"
+      },
+      "applicationCategory": "OSCAR Service",
+      "memoryRequirements": "4 GiB plus persistent volume storage for Hermes state",
+      "processorRequirements": [
+        "2 vCPU",
+        "0 GPU"
+      ],
+      "serviceType": "exposed",
+      "isBasedOn": [
+        {
+          "@id": "https://github.com/NousResearch/hermes-agent"
+        }
+      ],
+      "softwareRequirements": [
+        {
+          "@id": "https://hub.docker.com/r/nousresearch/hermes-agent"
+        }
+      ],
+      "author": {
+        "@id": "#author"
+      },
+      "hasPart": [
+        {
+          "@id": "fdl.yml"
+        },
+        {
+          "@id": "script.sh"
+        },
+        {
+          "@id": "icon.svg"
+        }
+      ]
+    },
+    {
+      "@id": "fdl.yml",
+      "@type": [
+        "File",
+        "SoftwareSourceCode"
+      ],
+      "name": "Service Definition (FDL)",
+      "encodingFormat": "text/yaml"
+    },
+    {
+      "@id": "script.sh",
+      "@type": [
+        "File",
+        "SoftwareSourceCode"
+      ],
+      "name": "Service Execution Script",
+      "encodingFormat": "text/x-shellscript"
+    },
+    {
+      "@id": "icon.svg",
+      "@type": [
+        "File",
+        "ImageObject"
+      ],
+      "name": "Service Icon",
+      "encodingFormat": "image/svg+xml"
+    },
+    {
+      "@id": "#author",
+      "@type": "Person",
+      "affiliation": {
+        "@id": "UPV"
+      },
+      "name": "Germán Moltó"
+    },
+    {
+      "@id": "UPV",
+      "@type": "Organization",
+      "name": "Universitat Politècnica de València",
+      "url": "https://www.upv.es"
+    },
+    {
+      "@id": "https://opensource.org/license/mit",
+      "@type": "CreativeWork",
+      "name": "MIT License",
+      "identifier": "SPDX:MIT"
+    },
+    {
+      "@id": "https://github.com/NousResearch/hermes-agent",
+      "@type": "SoftwareApplication",
+      "name": "Hermes Agent",
+      "description": "Open-source agentic AI system by Nous Research with tools, skills, memory, and multi-platform interfaces.",
+      "url": "https://github.com/NousResearch/hermes-agent"
+    },
+    {
+      "@id": "https://hub.docker.com/r/nousresearch/hermes-agent",
+      "@type": "SoftwareApplication",
+      "name": "nousresearch/hermes-agent Docker image",
+      "url": "https://hub.docker.com/r/nousresearch/hermes-agent"
+    }
+  ]
+}

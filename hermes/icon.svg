@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Hermes Agent icon</title>
+  <desc id="desc">Abstract wing and chat mark for Hermes Agent.</desc>
+  <rect width="128" height="128" rx="24" fill="#111827"/>
+  <path d="M28 72c18-30 43-43 75-43-12 10-20 21-24 34 9-4 18-6 27-6-16 11-32 21-49 29-10 5-20 7-29 7 7-5 13-12 18-20-6 2-12 2-18-1Z" fill="#f8fafc"/>
+  <path d="M37 43h36c9 0 16 7 16 16v8c0 9-7 16-16 16H56L39 96v-13h-2c-9 0-16-7-16-16v-8c0-9 7-16 16-16Z" fill="#38bdf8" opacity=".9"/>
+  <circle cx="46" cy="63" r="4" fill="#0f172a"/>
+  <circle cx="56" cy="63" r="4" fill="#0f172a"/>
+  <circle cx="66" cy="63" r="4" fill="#0f172a"/>
+</svg>
