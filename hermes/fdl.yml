@@ -4,7 +4,7 @@ functions:
       name: hermes-agent
       cpu: "2.0"
       memory: 4Gi
-      image: nousresearch/hermes-agent:latest
+      image: nousresearch/hermes-agent:v2026.5.7
       script: script.sh
       log_level: INFO
       environment:

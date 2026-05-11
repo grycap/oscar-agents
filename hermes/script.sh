@@ -29,59 +29,68 @@ if [ -d /opt/hermes/ui-tui/packages/hermes-ink ]; then
     cd /opt/hermes/ui-tui
     npm run build --prefix packages/hermes-ink
     mkdir -p node_modules/@hermes/ink
-    cp packages/hermes-ink/index.js \
-      packages/hermes-ink/index.d.ts \
-      packages/hermes-ink/text-input.js \
-      packages/hermes-ink/text-input.d.ts \
-      node_modules/@hermes/ink/
-    rm -rf node_modules/@hermes/ink/dist
-    cp -R packages/hermes-ink/dist node_modules/@hermes/ink/dist
+    for file in index.js index.d.ts text-input.js text-input.d.ts; do
+      src="packages/hermes-ink/$file"
+      dst="node_modules/@hermes/ink/$file"
+      if [ ! -e "$dst" ] || [ "$src" -ef "$dst" ]; then
+        continue
+      fi
+      cp "$src" "$dst"
+    done
+    if [ ! -e node_modules/@hermes/ink/dist ] || [ ! packages/hermes-ink/dist -ef node_modules/@hermes/ink/dist ]; then
+      rm -rf node_modules/@hermes/ink/dist
+      cp -R packages/hermes-ink/dist node_modules/@hermes/ink/dist
+    fi
   )
 fi
 
 python3 - <<'PY'
 import os
+import re
 from pathlib import Path
 
 base = os.environ.get("HERMES_BASE_PATH", "/").rstrip("/")
 if not base or base == "/":
     raise SystemExit(0)
 
+base_script = (
+    f'<script>window.__HERMES_BASE_PATH__="{base}";</script>'
+)
 web_dist = Path(os.environ.get("HERMES_WEB_DIST", "/opt/hermes/hermes_cli/web_dist"))
 index_path = web_dist / "index.html"
 server_path = Path("/opt/hermes/hermes_cli/web_server.py")
 
 if index_path.exists():
     html = index_path.read_text()
+    html = html.replace(base_script, "")
     html = html.replace('href="/favicon.ico"', f'href="{base}/favicon.ico"')
     html = html.replace('src="/assets/', f'src="{base}/assets/')
     html = html.replace('href="/assets/', f'href="{base}/assets/')
-    if "window.__HERMES_BASE_PATH__" not in html:
+    html = html.replace('src="/ds-assets/', f'src="{base}/ds-assets/')
+    html = html.replace('href="/ds-assets/', f'href="{base}/ds-assets/')
+    if "</head>" in html:
         html = html.replace(
-            "</head>",
-            f'<script>window.__HERMES_BASE_PATH__="{base}";</script></head>',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n'
+            f'    {base_script}',
             1,
         )
     index_path.write_text(html)
 
+for css_path in web_dist.glob("assets/*.css"):
+    css = css_path.read_text()
+    css = css.replace(f"url({base}/", "url(/")
+    css = css.replace("url(/", f"url({base}/")
+    css_path.write_text(css)
+
 for js_path in web_dist.glob("assets/index-*.js"):
     js = js_path.read_text()
-    js = js.replace('const bk="";', 'const bk=window.__HERMES_BASE_PATH__||"";')
-    js = js.replace(
-        'B5.createRoot(document.getElementById("root")).render(u.jsx(i3,{children:',
-        'B5.createRoot(document.getElementById("root")).render(u.jsx(i3,{basename:window.__HERMES_BASE_PATH__||"/",children:',
-    )
-    js = js.replace(
-        '${n}//${location.host}/api/ws?',
-        '${n}//${location.host}${window.__HERMES_BASE_PATH__||""}/api/ws?',
-    )
-    js = js.replace(
-        '${H}//${window.location.host}/api/events?',
-        '${H}//${window.location.host}${window.__HERMES_BASE_PATH__||""}/api/events?',
-    )
-    js = js.replace(
-        '${n}//${window.location.host}/api/pty?',
-        '${n}//${window.location.host}${window.__HERMES_BASE_PATH__||""}/api/pty?',
+    js = js.replace(f'src:"{base}/ds-assets/', 'src:"/ds-assets/')
+    js = js.replace('src:"/ds-assets/', f'src:"{base}/ds-assets/')
+    js = re.sub(
+        r'(\$\{[^}]+\}//\$\{(?:window\.)?location\.host\})(?!\$\{[^}]+BASE_PATH[^}]*\})(/api/(?:ws|events|pty)\?)',
+        r'\1${window.__HERMES_BASE_PATH__||""}\2',
+        js,
     )
     js_path.write_text(js)
 
@@ -123,6 +132,10 @@ class _HermesBasePathMiddleware:
     server = server.replace(
         'return f"ws://{netloc}/api/pub?{qs}"',
         'return f"ws://{netloc}{os.getenv(\'HERMES_BASE_PATH\', \'\').rstrip(\'/\')}/api/pub?{qs}"',
+    )
+    server = server.replace(
+        'prefix = _normalise_prefix(request.headers.get("x-forwarded-prefix"))',
+        'prefix = _normalise_prefix(request.headers.get("x-forwarded-prefix") or os.getenv("HERMES_BASE_PATH", ""))',
     )
     server_path.write_text(server)
 PY
