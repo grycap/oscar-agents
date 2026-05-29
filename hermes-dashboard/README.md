@@ -1,4 +1,4 @@
-# Hermes Agent
+# Hermes Dashboard
 
 This definition deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) as an OSCAR exposed service using the official `nousresearch/hermes-agent` Docker image. It starts the Hermes web dashboard with the embedded TUI chat enabled, so users can configure providers and chat with the agent from the browser.
 
@@ -6,7 +6,7 @@ The service does not deploy an LLM. Hermes should be configured to use an extern
 
 ## Deployment defaults
 
-- `name: hermes-agent`
+- `name: hermes-dashboard`
 - `memory: 4Gi`
 - `cpu: 2.0`
 - `image: nousresearch/hermes-agent:latest`
@@ -36,7 +36,7 @@ Before deploying, replace `volume.name` with the OSCAR volume that should persis
 The service is exposed at:
 
 ```text
-/system/services/hermes-agent/exposed/
+/system/services/hermes-dashboard/exposed/
 ```
 
 The dashboard is started with:

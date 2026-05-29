@@ -1,7 +1,7 @@
 functions:
   oscar:
   - oscar-cluster:
-      name: hermes-agent
+      name: hermes-dashboard
       cpu: "2.0"
       memory: 4Gi
       image: nousresearch/hermes-agent:v2026.5.7
@@ -14,11 +14,11 @@ functions:
           HERMES_DATA_DIR: /opt/data
           HERMES_DASHBOARD_TUI: "true"
           HERMES_DASHBOARD_INSECURE: "true"
-          HERMES_BASE_PATH: /system/services/hermes-agent/exposed
+          HERMES_BASE_PATH: /system/services/hermes-dashboard/exposed
         secrets:
           OPENAI_API_KEY: change-me
       volume:
-        name: hermes-agent-volume
+        name: hermes-dashboard-volume
         mount_path: /opt/data
       expose:
         min_scale: 1

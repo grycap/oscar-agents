@@ -21,8 +21,8 @@
         "SoftwareApplication"
       ],
       "datePublished": "2026-04-28",
-      "URL": "https://github.com/grycap/oscar-agents/tree/main/hermes",
-      "name": "OSCAR Hermes Agent",
+      "URL": "https://github.com/grycap/oscar-agents/tree/main/hermes-dashboard",
+      "name": "OSCAR Hermes Dashboard",
       "description": "OSCAR exposed service that runs the official Hermes Agent Docker image as a persistent browser-accessible dashboard with embedded TUI chat. The service stores Hermes configuration, sessions, memory, skills, and workspace data in a mounted OSCAR volume, while users configure an external or already deployed OpenAI-compatible LLM provider.",
       "license": {
         "@id": "https://opensource.org/license/mit"
