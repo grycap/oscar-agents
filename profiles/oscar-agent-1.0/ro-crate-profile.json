@@ -1,0 +1,54 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context"
+  ],
+  "@type": "Profile",
+  "@id": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0",
+  "name": "OSCAR Agent Profile",
+  "description": "RO-Crate profile for AI agents deployable as OSCAR services.",
+  "version": "1.0",
+  "extends": [
+    "https://w3id.org/ro/crate/1.1"
+  ],
+  "mainEntity": {
+    "@type": [
+      "Dataset",
+      "Service",
+      "SoftwareApplication",
+      "Agent"
+    ],
+    "description": "An AI agent deployable as an OSCAR service."
+  },
+  "terms": [
+    {
+      "@id": "#Agent",
+      "name": "Agent",
+      "description": "Deployable AI agent packaged with OSCAR service metadata."
+    },
+    {
+      "@id": "#AgentSoul",
+      "name": "AgentSoul",
+      "description": "Markdown file describing the identity, behavior, and instructions of an OSCAR agent."
+    },
+    {
+      "@id": "#AgentSkill",
+      "name": "AgentSkill",
+      "description": "Reusable skill used by an OSCAR agent."
+    },
+    {
+      "@id": "#agentMode",
+      "name": "agentMode",
+      "description": "Execution mode of the OSCAR agent. Supported values are exposed and on-demand."
+    },
+    {
+      "@id": "#agentSkills",
+      "name": "agentSkills",
+      "description": "Skills used by the agent, including local packaged skills and external skill references."
+    },
+    {
+      "@id": "#skillSource",
+      "name": "skillSource",
+      "description": "Origin of a skill reference, such as local, marketplace, or external."
+    }
+  ]
+}
