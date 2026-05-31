@@ -20,8 +20,9 @@ fi
 
 export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 export OPENAI_MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
-export HERMES_PROVIDER_NAME="${HERMES_PROVIDER_NAME:-openai-compatible}"
+export LLM_PROVIDER_NAME="${LLM_PROVIDER_NAME:-${HERMES_PROVIDER_NAME:-openai-compatible}}"
 export AGENT_SOUL="${AGENT_SOUL:-You are an OSCAR agent. Process the provided input file according to the deployment instructions and return the final result.}"
+export AGENT_SKILLS="${AGENT_SKILLS:-}"
 export HERMES_HOME="${HERMES_HOME:-/tmp/hermes-home}"
 export HOME="${HOME:-/tmp}"
 
@@ -34,8 +35,8 @@ output_file="$TMP_OUTPUT_DIR/${base_name}-result.txt"
 workspace="$(mktemp -d)"
 trap 'rm -rf "$workspace"' EXIT
 
-echo "Hermes async file processor"
-echo "Provider: $HERMES_PROVIDER_NAME"
+echo "Hermes OSCAR agent processor"
+echo "Provider: $LLM_PROVIDER_NAME"
 echo "Model: $OPENAI_MODEL"
 echo "Input: $INPUT_FILE_PATH"
 echo "Output: $output_file"
@@ -47,12 +48,12 @@ fi
 
 cat > "$HERMES_HOME/config.yaml" <<EOF
 custom_providers:
-  - name: ${HERMES_PROVIDER_NAME}
+  - name: ${LLM_PROVIDER_NAME}
     base_url: ${OPENAI_BASE_URL}
     api_key: ${OPENAI_API_KEY}
     model: ${OPENAI_MODEL}
 model: ${OPENAI_MODEL}
-provider: ${HERMES_PROVIDER_NAME}
+provider: ${LLM_PROVIDER_NAME}
 hooks_auto_accept: true
 EOF
 chmod 600 "$HERMES_HOME/config.yaml"
@@ -61,6 +62,9 @@ cp "$INPUT_FILE_PATH" "$workspace/$input_name"
 
 query=$(cat <<EOF
 ${AGENT_SOUL}
+
+Available reusable skills:
+${AGENT_SKILLS}
 
 Task:
 The input file to be processed is available at:
@@ -77,7 +81,7 @@ EOF
   "$HERMES_BIN" chat \
     -t file,terminal \
     -q "$query" \
-    --provider "$HERMES_PROVIDER_NAME" \
+    --provider "$LLM_PROVIDER_NAME" \
     -m "$OPENAI_MODEL" \
     -Q \
     --accept-hooks \

@@ -1,0 +1,26 @@
+functions:
+  oscar:
+  - oscar-cluster:
+      name: pdf-summarizer
+      cpu: "1.0"
+      memory: 2Gi
+      image: ghcr.io/grycap/hermes-agent:v2026.5.29.2
+      script: ../../frameworks/hermes/script.sh
+      log_level: INFO
+      environment:
+        variables:
+          LLM_PROVIDER_NAME: egi
+          OPENAI_BASE_URL: https://llm.ai.egi.eu/v1
+          OPENAI_MODEL: agentic
+          AGENT_SOUL: |
+            {{ file "SOUL.md" }}
+          AGENT_SKILLS: |
+            {{ agentSkills }}
+        secrets:
+          OPENAI_API_KEY: YOUR_OPENAI_API_KEY
+      input:
+      - storage_provider: minio.default
+        path: pdf-summarizer/input
+      output:
+      - storage_provider: minio.default
+        path: pdf-summarizer/output

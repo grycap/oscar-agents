@@ -1,0 +1,175 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "agentMode": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0#agentMode",
+      "agentSkills": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0#agentSkills",
+      "skillSource": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0#skillSource"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "./",
+      "@type": [
+        "Dataset",
+        "Service",
+        "SoftwareApplication",
+        "Agent"
+      ],
+      "conformsTo": {
+        "@id": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0"
+      },
+      "name": "PDF Summarizer Agent",
+      "description": "Automatically extracts and summarizes key content from PDF documents using LLM-based analysis.",
+      "version": "0.1.0",
+      "datePublished": "2026-05-31",
+      "keywords": [
+        "PDF",
+        "summarization",
+        "LLM",
+        "academic"
+      ],
+      "applicationCategory": "OSCAR Agent",
+      "agentMode": "on-demand",
+      "isBasedOn": {
+        "@id": "#hermes-framework"
+      },
+      "agentSkills": [
+        {
+          "@id": "../../skills/pdf-extract/SKILL.md"
+        },
+        {
+          "@id": "https://www.skills.sh/openai/skills/pdf"
+        }
+      ],
+      "author": {
+        "@id": "#author"
+      },
+      "license": {
+        "@id": "#license"
+      },
+      "hasPart": [
+        {
+          "@id": "fdl.yml"
+        },
+        {
+          "@id": "../../frameworks/hermes/script.sh"
+        },
+        {
+          "@id": "SOUL.md"
+        },
+        {
+          "@id": "../../skills/pdf-extract/SKILL.md"
+        },
+        {
+          "@id": "icon.png"
+        }
+      ]
+    },
+    {
+      "@id": "fdl.yml",
+      "@type": [
+        "File",
+        "SoftwareSourceCode"
+      ],
+      "name": "PDF Summarizer Agent Deployment Definition",
+      "description": "OSCAR FDL deployment descriptor for the PDF Summarizer agent.",
+      "encodingFormat": "text/yaml"
+    },
+    {
+      "@id": "../../frameworks/hermes/script.sh",
+      "@type": [
+        "File",
+        "SoftwareSourceCode"
+      ],
+      "name": "Hermes bootstrap script",
+      "description": "Bootstrap script used to initialize the Hermes-based agent runtime.",
+      "encodingFormat": "text/x-shellscript"
+    },
+    {
+      "@id": "SOUL.md",
+      "@type": [
+        "File",
+        "CreativeWork",
+        "AgentSoul"
+      ],
+      "name": "PDF Summarizer Soul",
+      "description": "Identity, behavior, and instructions for the PDF Summarizer agent.",
+      "encodingFormat": "text/markdown"
+    },
+    {
+      "@id": "../../skills/pdf-extract/SKILL.md",
+      "@type": [
+        "File",
+        "CreativeWork",
+        "AgentSkill"
+      ],
+      "name": "PDF Extract Skill",
+      "description": "Reusable Hermes skill for extracting text and metadata from PDF files.",
+      "encodingFormat": "text/markdown",
+      "skillSource": "local",
+      "applicationCategory": "Agent Skill"
+    },
+    {
+      "@id": "https://www.skills.sh/openai/skills/pdf",
+      "@type": [
+        "CreativeWork",
+        "AgentSkill"
+      ],
+      "name": "OpenAI PDF Skill",
+      "description": "External PDF processing skill from the OpenAI skills collection.",
+      "url": "https://www.skills.sh/openai/skills/pdf",
+      "skillSource": "marketplace",
+      "provider": {
+        "@id": "https://www.skills.sh/"
+      },
+      "applicationCategory": "Agent Skill"
+    },
+    {
+      "@id": "https://www.skills.sh/",
+      "@type": [
+        "WebSite",
+        "DataCatalog"
+      ],
+      "name": "Skills",
+      "url": "https://www.skills.sh/"
+    },
+    {
+      "@id": "icon.png",
+      "@type": [
+        "File",
+        "ImageObject"
+      ],
+      "name": "PDF Summarizer Agent Icon",
+      "encodingFormat": "image/png"
+    },
+    {
+      "@id": "#hermes-framework",
+      "@type": "SoftwareApplication",
+      "name": "Hermes Agent",
+      "url": "https://github.com/NousResearch/hermes-agent"
+    },
+    {
+      "@id": "#author",
+      "@type": "Organization",
+      "name": "GRyCAP"
+    },
+    {
+      "@id": "#license",
+      "@type": "CreativeWork",
+      "name": "MIT License",
+      "url": "https://opensource.org/license/mit",
+      "identifier": "SPDX:MIT"
+    }
+  ]
+}

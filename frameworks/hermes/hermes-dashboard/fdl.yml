@@ -15,8 +15,11 @@ functions:
           HERMES_DASHBOARD_TUI: "true"
           HERMES_DASHBOARD_INSECURE: "true"
           HERMES_BASE_PATH: /system/services/hermes-dashboard/exposed
+          LLM_PROVIDER_NAME: egi
+          OPENAI_BASE_URL: https://llm.ai.egi.eu/v1
+          OPENAI_MODEL: agentic
         secrets:
-          OPENAI_API_KEY: change-me
+          OPENAI_API_KEY: YOUR_OPENAI_API_KEY
       volume:
         name: hermes-dashboard-volume
         mount_path: /opt/data

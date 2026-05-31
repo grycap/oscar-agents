@@ -3,16 +3,23 @@ set -euo pipefail
 
 export HERMES_DATA_DIR="${HERMES_DATA_DIR:-/opt/data}"
 export HERMES_BASE_PATH="${OSCAR_SERVICE_BASE_PATH:-${HERMES_BASE_PATH:-/}}"
+export HERMES_HOME="${HERMES_HOME:-$HERMES_DATA_DIR}"
+export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+export OPENAI_MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
+export LLM_PROVIDER_NAME="${LLM_PROVIDER_NAME:-${HERMES_PROVIDER_NAME:-openai-compatible}}"
 
 HERMES_HOST="${HERMES_HOST:-0.0.0.0}"
 HERMES_PORT="${HERMES_PORT:-9119}"
 
 mkdir -p "$HERMES_DATA_DIR"
+mkdir -p "$HERMES_HOME"
 
 echo "Starting Hermes Agent dashboard"
 echo "Hermes data: $HERMES_DATA_DIR"
 echo "Dashboard bind: ${HERMES_HOST}:${HERMES_PORT}"
 echo "Base path: $HERMES_BASE_PATH"
+echo "Provider: $LLM_PROVIDER_NAME"
+echo "Model: $OPENAI_MODEL"
 
 if command -v hermes >/dev/null 2>&1; then
   HERMES_BIN="hermes"
@@ -21,6 +28,22 @@ elif [ -x /opt/hermes/.venv/bin/hermes ]; then
 else
   echo "Hermes executable not found" >&2
   exit 1
+fi
+
+if [ -n "${OPENAI_API_KEY:-}" ]; then
+  cat > "$HERMES_HOME/config.yaml" <<EOF
+custom_providers:
+  - name: ${LLM_PROVIDER_NAME}
+    base_url: ${OPENAI_BASE_URL}
+    api_key: ${OPENAI_API_KEY}
+    model: ${OPENAI_MODEL}
+model: ${OPENAI_MODEL}
+provider: ${LLM_PROVIDER_NAME}
+hooks_auto_accept: true
+EOF
+  chmod 600 "$HERMES_HOME/config.yaml"
+else
+  echo "OPENAI_API_KEY is not set; keeping any existing Hermes provider configuration"
 fi
 
 if [ -d /opt/hermes/ui-tui/packages/hermes-ink ]; then
