@@ -1,6 +1,9 @@
 {
   "@context": [
-    "https://w3id.org/ro/crate/1.1/context"
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "agentMode": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0#agentMode"
+    }
   ],
   "@graph": [
     {
@@ -18,16 +21,21 @@
       "@type": [
         "Dataset",
         "Service",
-        "SoftwareApplication"
+        "SoftwareApplication",
+        "Agent"
       ],
+      "conformsTo": {
+        "@id": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.0"
+      },
       "datePublished": "2026-04-28",
-      "url": "https://github.com/grycap/oscar-agents/tree/main/frameworks/hermes/hermes-dashboard",
+      "url": "https://github.com/grycap/oscar-agents/tree/main/agents/hermes-dashboard",
       "name": "OSCAR Hermes Dashboard",
       "description": "OSCAR exposed service that runs the official Hermes Agent Docker image as a persistent browser-accessible dashboard with embedded TUI chat. The service stores Hermes configuration, sessions, memory, skills, and workspace data in a mounted OSCAR volume, while users configure an external or already deployed OpenAI-compatible LLM provider.",
       "license": {
         "@id": "https://opensource.org/license/mit"
       },
-      "applicationCategory": "OSCAR Service",
+      "applicationCategory": "OSCAR Agent",
+      "agentMode": "exposed",
       "isBasedOn": {
         "@id": "https://github.com/NousResearch/hermes-agent"
       },
@@ -40,6 +48,9 @@
         },
         {
           "@id": "script.sh"
+        },
+        {
+          "@id": "SOUL.md"
         },
         {
           "@id": "icon.png"
@@ -65,6 +76,17 @@
       "encodingFormat": "text/x-shellscript"
     },
     {
+      "@id": "SOUL.md",
+      "@type": [
+        "File",
+        "CreativeWork",
+        "AgentSoul"
+      ],
+      "name": "Hermes Dashboard Soul",
+      "description": "Identity, behavior, and instructions for the Hermes Dashboard agent.",
+      "encodingFormat": "text/markdown"
+    },
+    {
       "@id": "icon.png",
       "@type": [
         "File",
@@ -75,17 +97,8 @@
     },
     {
       "@id": "#author",
-      "@type": "Person",
-      "affiliation": {
-        "@id": "UPV"
-      },
-      "name": "Germán Moltó"
-    },
-    {
-      "@id": "UPV",
       "@type": "Organization",
-      "name": "Universitat Politècnica de València",
-      "url": "https://www.upv.es"
+      "name": "GRyCAP"
     },
     {
       "@id": "https://opensource.org/license/mit",

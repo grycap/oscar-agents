@@ -7,11 +7,11 @@ The repository is moving toward a layered layout where deployable agents live un
 ## Agents
 
 - [`agents/pdf-summarizer`](./agents/pdf-summarizer): On-demand Hermes-based agent that extracts readable PDF text and returns a concise summary.
+- [`agents/hermes-dashboard`](./agents/hermes-dashboard): Exposed Hermes dashboard agent with persistent volume-backed state and a dedicated startup script.
 
 ## Shared Resources
 
 - [`frameworks/hermes`](./frameworks/hermes): Common Hermes bootstrap script and runtime definitions.
-- [`frameworks/hermes/hermes-dashboard`](./frameworks/hermes/hermes-dashboard): Special Hermes dashboard service definition with its own startup script.
 - [`skills/pdf-extract`](./skills/pdf-extract): Reusable skill for extracting readable text from PDFs.
 
 ## Usage

@@ -6,8 +6,8 @@ Hermes Agent.
 ## Files
 
 - `script.sh`: common bootstrap script referenced by agent FDL files.
-- `runtimes/base/Dockerfile`: base Hermes runtime image used by the first
-  `pdf-summarizer` agent.
+- `runtimes/base/Dockerfile`: base Hermes runtime image used by Hermes-based
+  agents.
 
 Agent-specific identity, skills, deployment defaults, and RO-Crate metadata live
 outside this framework directory.
