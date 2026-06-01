@@ -1,8 +1,7 @@
 # PDF Summarizer Agent
 
-This OSCAR agent processes PDF files on demand. It extracts readable text with
-the shared Hermes PDF runtime and asks Hermes Agent to produce a concise,
-factual plain-text summary.
+This OSCAR agent processes PDF files on demand. It extracts readable text and
+asks Hermes Agent to produce a concise, factual plain-text summary.
 
 ## Files
 

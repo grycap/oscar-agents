@@ -1,6 +1,6 @@
 # Hermes Dashboard
 
-This definition deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) as an OSCAR exposed service using a `ghcr.io/grycap/hermes-agent` Docker image. It starts the Hermes web dashboard with the embedded TUI chat enabled and can preconfigure an OpenAI-compatible LLM provider from the FDL.
+This OSCAR agent deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) as an exposed service using the `nousresearch/hermes-agent` Docker image. It starts the Hermes web dashboard with the embedded TUI chat enabled and can preconfigure an OpenAI-compatible LLM provider from the FDL.
 
 The service does not deploy an LLM. Hermes should be configured to use an external or already deployed OpenAI-compatible provider such as OpenAI, OpenRouter, a vLLM service running in OSCAR, or PoliGPT.
 
@@ -9,7 +9,7 @@ The service does not deploy an LLM. Hermes should be configured to use an extern
 - `name: hermes-dashboard`
 - `memory: 4Gi`
 - `cpu: 2.0`
-- `image: ghcr.io/grycap/hermes-agent:v2026.5.7`
+- `image: nousresearch/hermes-agent:v2026.5.7`
 - `api_port: 9119`
 - `health_path: /api/status`
 
@@ -71,4 +71,4 @@ For PoliGPT or other OpenAI-compatible endpoints, update `LLM_PROVIDER_NAME`, `O
 
 - Hermes requires `--insecure` when the dashboard binds to `0.0.0.0`. Keep OSCAR authentication enabled unless the service is protected by another access control layer.
 - The dashboard can edit configuration and secrets stored in the Hermes data directory.
-- The service uses a `ghcr.io/grycap/hermes-agent` image, which includes Hermes dependencies, Node.js/npm, Playwright/Chromium, ripgrep, ffmpeg, and volume bootstrapping for `/opt/data`.
+- The service uses the `nousresearch/hermes-agent` image, which includes Hermes dependencies, Node.js/npm, Playwright/Chromium, ripgrep, ffmpeg, and volume bootstrapping for `/opt/data`.
