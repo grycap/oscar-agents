@@ -9,9 +9,9 @@ functions:
       log_level: INFO
       environment:
         variables:
-          LLM_PROVIDER_NAME: egi
-          OPENAI_BASE_URL: https://llm.ai.egi.eu/v1
-          OPENAI_MODEL: agentic
+          LLM_PROVIDER_NAME: YOUR_LLM_PROVIDER_NAME
+          OPENAI_BASE_URL: YOUR_OPENAI_BASE_URL
+          OPENAI_MODEL: YOUR_OPENAI_MODEL
           AGENT_SOUL: |
             {{ file "SOUL.md" }}
           AGENT_SKILLS: |
