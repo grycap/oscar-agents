@@ -45,6 +45,10 @@
         "0.5 vCPU",
         "0 GPU"
       ],
+      "serviceType": [
+        "agent",
+        "asynchronous"
+      ],
       "agentMode": "on-demand",
       "isBasedOn": {
         "@id": "#hermes-framework"
