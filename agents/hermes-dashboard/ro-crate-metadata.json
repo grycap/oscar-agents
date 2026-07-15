@@ -35,16 +35,16 @@
         "@id": "https://opensource.org/license/mit"
       },
       "applicationCategory": "OSCAR Agent",
-      "memoryRequirements": "512 MiB",
+      "memoryRequirements": "2 GiB",
       "processorRequirements": [
-        "0.5 vCPU",
+        "2 vCPU",
         "0 GPU"
       ],
       "serviceType": [
         "agent",
         "exposed"
       ],
-      "agentMode": "exposed",
+      "agentType": "exposed",
       "isBasedOn": {
         "@id": "https://github.com/NousResearch/hermes-agent"
       },

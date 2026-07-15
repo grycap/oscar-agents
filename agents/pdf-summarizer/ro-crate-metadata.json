@@ -40,16 +40,16 @@
         "academic"
       ],
       "applicationCategory": "OSCAR Agent",
-      "memoryRequirements": "512 MiB",
+      "memoryRequirements": "2 GiB",
       "processorRequirements": [
-        "0.5 vCPU",
+        "1 vCPU",
         "0 GPU"
       ],
       "serviceType": [
         "agent",
         "asynchronous"
       ],
-      "agentMode": "on-demand",
+      "agentType": "on-demand",
       "isBasedOn": {
         "@id": "#hermes-framework"
       },
