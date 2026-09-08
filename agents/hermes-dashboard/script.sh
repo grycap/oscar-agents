@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# OSCAR injects the service token; never fall back to an unrelated password.
+export HERMES_DASHBOARD_BASIC_AUTH_USERNAME="admin"
+export HERMES_DASHBOARD_BASIC_AUTH_PASSWORD="${OSCAR_SERVICE_TOKEN:?OSCAR_SERVICE_TOKEN must be set and non-empty}"
+
 export HERMES_DATA_DIR="${HERMES_DATA_DIR:-/opt/data}"
-export HERMES_BASE_PATH="${OSCAR_SERVICE_BASE_PATH:-${HERMES_BASE_PATH:-/}}"
 export HERMES_HOME="${HERMES_HOME:-$HERMES_DATA_DIR}"
 export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 export OPENAI_MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
@@ -14,10 +17,16 @@ HERMES_PORT="${HERMES_PORT:-9119}"
 mkdir -p "$HERMES_DATA_DIR"
 mkdir -p "$HERMES_HOME"
 
+# The OSCAR supervisor starts the script as root, while the Hermes image runs
+# the dashboard as UID/GID 10000. Do not recursively chown the volume: an old
+# replica may still be updating SQLite WAL files during a rolling deployment.
+if [ "$(id -u)" -eq 0 ]; then
+  chown "${HERMES_RUNTIME_UID:-10000}:${HERMES_RUNTIME_GID:-10000}" "$HERMES_HOME"
+fi
+
 echo "Starting Hermes Agent dashboard"
 echo "Hermes data: $HERMES_DATA_DIR"
 echo "Dashboard bind: ${HERMES_HOST}:${HERMES_PORT}"
-echo "Base path: $HERMES_BASE_PATH"
 echo "Provider: $LLM_PROVIDER_NAME"
 echo "Model: $OPENAI_MODEL"
 
@@ -31,7 +40,8 @@ else
 fi
 
 if [ -n "${OPENAI_API_KEY:-}" ]; then
-  cat > "$HERMES_HOME/config.yaml" <<EOF
+  config_tmp="$(mktemp "$HERMES_HOME/.config.yaml.XXXXXX")"
+  cat > "$config_tmp" <<EOF
 custom_providers:
   - name: ${LLM_PROVIDER_NAME}
     base_url: ${OPENAI_BASE_URL}
@@ -41,7 +51,11 @@ model: ${OPENAI_MODEL}
 provider: ${LLM_PROVIDER_NAME}
 hooks_auto_accept: true
 EOF
-  chmod 600 "$HERMES_HOME/config.yaml"
+  chmod 600 "$config_tmp"
+  if [ "$(id -u)" -eq 0 ]; then
+    chown "${HERMES_RUNTIME_UID:-10000}:${HERMES_RUNTIME_GID:-10000}" "$config_tmp"
+  fi
+  mv "$config_tmp" "$HERMES_HOME/config.yaml"
 else
   echo "OPENAI_API_KEY is not set; keeping any existing Hermes provider configuration"
 fi
@@ -67,36 +81,6 @@ if [ -d /opt/hermes/ui-tui/packages/hermes-ink ]; then
   )
 fi
 
-python3 - <<'PY'
-import os
-import re
-from pathlib import Path
-
-base = os.environ.get("HERMES_BASE_PATH", "/").rstrip("/")
-if not base or base == "/":
-    raise SystemExit(0)
-
-web_dist = Path(os.environ.get("HERMES_WEB_DIST", "/opt/hermes/hermes_cli/web_dist"))
-server_path = Path("/opt/hermes/hermes_cli/web_server.py")
-
-for js_path in web_dist.glob("assets/index-*.js"):
-    js = js_path.read_text()
-    js = re.sub(
-        r'(\$\{[^}]+\}//\$\{(?:window\.)?location\.host\})(?!\$\{[^}]+BASE_PATH[^}]*\})(/api/(?:ws|events|pty)\?)',
-        r'\1${window.__HERMES_BASE_PATH__||""}\2',
-        js,
-    )
-    js_path.write_text(js)
-
-if server_path.exists():
-    server = server_path.read_text()
-    server = server.replace(
-        'prefix = _normalise_prefix(request.headers.get("x-forwarded-prefix"))',
-        'prefix = _normalise_prefix(request.headers.get("x-forwarded-prefix") or os.getenv("HERMES_BASE_PATH", ""))',
-    )
-    server_path.write_text(server)
-PY
-
 dashboard_args=(
   dashboard
   --host "$HERMES_HOST"
@@ -106,10 +90,6 @@ dashboard_args=(
 
 if [ "${HERMES_DASHBOARD_TUI:-true}" = "true" ]; then
   dashboard_args+=(--tui)
-fi
-
-if [ "${HERMES_DASHBOARD_INSECURE:-false}" = "true" ]; then
-  dashboard_args+=(--insecure)
 fi
 
 exec "$HERMES_BIN" "${dashboard_args[@]}"

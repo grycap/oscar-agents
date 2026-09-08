@@ -4,7 +4,7 @@ functions:
       name: hermes-dashboard
       cpu: "2.0"
       memory: 2Gi
-      image: nousresearch/hermes-agent:v2026.5.7
+      image: nousresearch/hermes-agent:v2026.9.7
       script: script.sh
       log_level: INFO
       environment:
@@ -13,22 +13,20 @@ functions:
           HERMES_HOST: "0.0.0.0"
           HERMES_DATA_DIR: /opt/data
           HERMES_DASHBOARD_TUI: "true"
-          HERMES_DASHBOARD_INSECURE: "true"
           LLM_PROVIDER_NAME: YOUR_LLM_PROVIDER_NAME
           OPENAI_BASE_URL: YOUR_OPENAI_BASE_URL
           OPENAI_MODEL: YOUR_OPENAI_MODEL
         secrets:
           OPENAI_API_KEY: YOUR_OPENAI_API_KEY
+          HERMES_DASHBOARD_BASIC_AUTH_SECRET: YOUR_HERMES_DASHBOARD_SESSION_SECRET
       volume:
         name: hermes-dashboard-volume
         mount_path: /opt/data
       expose:
         min_scale: 1
         max_scale: 1
-        api_port: 9119
+        api_port: [9119]
         cpu_threshold: 90
-        rewrite_target: false
-        set_auth: true
-        auth_type: forward
-        health_path: /api/status
+        set_auth: false
+        health_path: /api/health
         probe_mode: direct
