@@ -41,6 +41,7 @@ class PDFScriptTests(unittest.TestCase):
         self.assertEqual(profile_root["isProfileOf"], {"@id": "https://w3id.org/ro/crate/1.2"})
         self.assertEqual(profile_graph["ro-crate-metadata.json"]["about"], {"@id": "./"})
         self.assertIn({"@id": "README.md"}, profile_root["hasPart"])
+        self.assertEqual(profile_graph["README.md"]["about"], {"@id": "./"})
         profile_id = profile_root["identifier"]
         terms = {entity["name"] for entity in profile["@graph"]
                  if entity.get("@type") == "DefinedTerm"}

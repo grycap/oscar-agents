@@ -24,6 +24,7 @@
       "@type": ["File", "CreativeWork"],
       "name": "OSCAR Agent Profile 1.1 description",
       "description": "Human-readable agent profile and deployment guidance.",
+      "about": {"@id": "./"},
       "encodingFormat": "text/markdown"
     },
     {
