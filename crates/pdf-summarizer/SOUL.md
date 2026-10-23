@@ -1,6 +1,5 @@
 ---
 name: pdf-summarizer
-agentMode: on-demand
 ---
 
 # PDF Summarizer Soul

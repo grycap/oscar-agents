@@ -1,13 +1,12 @@
 # Hermes Framework
 
-This directory contains shared infrastructure for OSCAR agents that run on
-Hermes Agent.
+This directory contains runtime-image definitions for OSCAR agents that run on
+Hermes Agent. Each crate maintains its own script and guidance.
 
 ## Files
 
-- `script.sh`: common bootstrap script referenced by agent FDL files.
 - `runtimes/base/Dockerfile`: base Hermes runtime image used by Hermes-based
   agents.
 
-Agent-specific identity, skills, deployment defaults, and RO-Crate metadata live
-outside this framework directory.
+Agent-specific scripts, identity, skills, deployment defaults, and RO-Crate
+metadata live in their respective `crates/` directories.

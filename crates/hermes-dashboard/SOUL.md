@@ -1,6 +1,5 @@
 ---
 name: hermes-dashboard
-agentMode: exposed
 ---
 
 # Hermes Dashboard Soul

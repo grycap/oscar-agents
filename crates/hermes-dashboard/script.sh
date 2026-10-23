@@ -7,9 +7,6 @@ export HERMES_DASHBOARD_BASIC_AUTH_PASSWORD="${OSCAR_SERVICE_TOKEN:?OSCAR_SERVIC
 
 export HERMES_DATA_DIR="${HERMES_DATA_DIR:-/opt/data}"
 export HERMES_HOME="${HERMES_HOME:-$HERMES_DATA_DIR}"
-export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
-export OPENAI_MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
-export LLM_PROVIDER_NAME="${LLM_PROVIDER_NAME:-${HERMES_PROVIDER_NAME:-openai-compatible}}"
 
 HERMES_HOST="${HERMES_HOST:-0.0.0.0}"
 HERMES_PORT="${HERMES_PORT:-9119}"
@@ -27,8 +24,6 @@ fi
 echo "Starting Hermes Agent dashboard"
 echo "Hermes data: $HERMES_DATA_DIR"
 echo "Dashboard bind: ${HERMES_HOST}:${HERMES_PORT}"
-echo "Provider: $LLM_PROVIDER_NAME"
-echo "Model: $OPENAI_MODEL"
 
 if command -v hermes >/dev/null 2>&1; then
   HERMES_BIN="hermes"
@@ -56,6 +51,8 @@ EOF
     chown "${HERMES_RUNTIME_UID:-10000}:${HERMES_RUNTIME_GID:-10000}" "$config_tmp"
   fi
   mv "$config_tmp" "$HERMES_HOME/config.yaml"
+  echo "Provider: $LLM_PROVIDER_NAME"
+  echo "Model: $OPENAI_MODEL"
 else
   echo "OPENAI_API_KEY is not set; keeping any existing Hermes provider configuration"
 fi
