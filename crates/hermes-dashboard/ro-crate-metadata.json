@@ -2,10 +2,10 @@
   "@context": [
     "https://w3id.org/ro/crate/1.2/context",
     {
-      "Agent": "https://github.com/grycap/oscar-agents/tree/devel/profiles/oscar-agent-1.1#Agent",
-      "AgentSoul": "https://github.com/grycap/oscar-agents/tree/devel/profiles/oscar-agent-1.1#AgentSoul",
-      "agentMode": "https://github.com/grycap/oscar-agents/tree/devel/profiles/oscar-agent-1.1#agentMode",
-      "agentSoul": {"@id": "https://github.com/grycap/oscar-agents/tree/devel/profiles/oscar-agent-1.1#agentSoul", "@type": "@id"}
+      "Agent": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.1#Agent",
+      "AgentSoul": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.1#AgentSoul",
+      "agentMode": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.1#agentMode",
+      "agentSoul": {"@id": "https://github.com/grycap/oscar-agents/tree/main/profiles/oscar-agent-1.1#agentSoul", "@type": "@id"}
     }
   ],
   "@graph": [
