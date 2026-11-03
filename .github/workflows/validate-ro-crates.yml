@@ -1,0 +1,36 @@
+name: Validate agent RO-Crates
+
+on:
+  pull_request:
+    paths:
+      - 'crates/**'
+      - 'profiles/**'
+      - 'tests/**'
+      - '.github/workflows/validate-ro-crates.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'crates/**'
+      - 'profiles/**'
+      - 'tests/**'
+      - '.github/workflows/validate-ro-crates.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install roc-validator==0.12.2 PyYAML==6.0.3
+      - name: Check packaged runtime guidance offline
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Validate profile and agents against RO-Crate 1.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          for crate in profiles/oscar-agent-1.1/ crates/*/; do
+            test -f "${crate}ro-crate-metadata.json"
+            rocrate-validator validate -p ro-crate-1.2 --verbose --no-paging "$crate"
+          done

@@ -5,17 +5,15 @@ functions:
       cpu: "1.0"
       memory: 2Gi
       image: ghcr.io/grycap/hermes-agent:v2026.5.29.2
-      script: ../../frameworks/hermes/script.sh
+      script: script.sh
       log_level: INFO
       environment:
         variables:
           LLM_PROVIDER_NAME: YOUR_LLM_PROVIDER_NAME
           OPENAI_BASE_URL: YOUR_OPENAI_BASE_URL
           OPENAI_MODEL: YOUR_OPENAI_MODEL
-          AGENT_SOUL: |
-            {{ file "SOUL.md" }}
-          AGENT_SKILLS: |
-            {{ agentSkills }}
+          AGENT_SOUL: YOUR_AGENT_SOUL
+          AGENT_SKILLS: YOUR_AGENT_SKILLS
         secrets:
           OPENAI_API_KEY: YOUR_OPENAI_API_KEY
       input:

@@ -2,7 +2,7 @@
 
 This OSCAR agent deploys [Hermes Agent](https://github.com/NousResearch/hermes-agent) as an exposed service using the `nousresearch/hermes-agent` Docker image. It starts the Hermes web dashboard with the embedded TUI chat enabled and can preconfigure an OpenAI-compatible LLM provider from the FDL.
 
-The service does not deploy an LLM. Hermes should be configured to use an external or already deployed OpenAI-compatible provider such as OpenAI, OpenRouter, a vLLM service running in OSCAR, or PoliGPT.
+The service does not deploy an LLM. Hermes requires an external or already deployed OpenAI-compatible provider. `SOUL.md` documents the intended agent identity; it is not loaded into the running Hermes dashboard.
 
 ## Deployment defaults
 
@@ -54,6 +54,8 @@ in the FDL. Use HTTPS and never put the token in a URL.
 
 Keep `HERMES_DASHBOARD_BASIC_AUTH_SECRET` stable to preserve Hermes sessions
 across restarts; it is the session-signing secret, not the login password.
+Replace its FDL placeholder with a strong, stable value before deployment;
+the script does not check it.
 
 **Security boundary:** OSCAR does not check user identity or service permissions
 on requests to this exposed endpoint. Anyone holding the service token can sign
@@ -89,9 +91,11 @@ environment:
     HERMES_DASHBOARD_BASIC_AUTH_SECRET: change-me-to-32-or-more-random-bytes
 ```
 
-Set provider API keys as OSCAR secrets instead of committing them to the FDL. If `OPENAI_API_KEY` is not set, the script leaves any existing Hermes provider configuration in the persistent data directory untouched.
-
-For PoliGPT or other OpenAI-compatible endpoints, update `LLM_PROVIDER_NAME`, `OPENAI_BASE_URL`, and `OPENAI_MODEL` in the FDL. If the provider requires custom headers beyond the standard `Authorization: Bearer` header, an adapter or proxy may be needed.
+Before deploying, replace the FDL placeholders for `OPENAI_API_KEY`,
+`LLM_PROVIDER_NAME`, `OPENAI_BASE_URL`, and `OPENAI_MODEL` without committing
+credentials. The script does not check them: the non-empty API key placeholder
+causes it to overwrite any existing Hermes provider configuration. To preserve
+that configuration, remove `OPENAI_API_KEY` from the FDL.
 
 ## Notes
 

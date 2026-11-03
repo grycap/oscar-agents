@@ -1,4 +1,5 @@
 #!/bin/sh
+# Crate-local OSCAR agent script.
 set -eu
 
 HERMES_BIN="${HERMES_BIN:-/opt/hermes/.venv/bin/hermes}"
@@ -18,10 +19,29 @@ if [ -z "${OPENAI_API_KEY:-}" ]; then
   exit 1
 fi
 
+if [ -z "${AGENT_SOUL:-}" ]; then
+  echo "AGENT_SOUL is not set" >&2
+  exit 1
+fi
+
+# Fail explicitly rather than sending unresolved crate placeholders to Hermes.
+case "$AGENT_SOUL" in
+  YOUR_AGENT_SOUL|file://*)
+    echo "AGENT_SOUL must contain resolved guidance" >&2
+    exit 1
+    ;;
+esac
+case "${AGENT_SKILLS:-}" in
+  YOUR_AGENT_SKILLS|file://*)
+    echo "AGENT_SKILLS must contain resolved guidance" >&2
+    exit 1
+    ;;
+esac
+
 export OPENAI_BASE_URL="${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 export OPENAI_MODEL="${OPENAI_MODEL:-gpt-4o-mini}"
 export LLM_PROVIDER_NAME="${LLM_PROVIDER_NAME:-${HERMES_PROVIDER_NAME:-openai-compatible}}"
-export AGENT_SOUL="${AGENT_SOUL:-You are an OSCAR agent. Process the provided input file according to the deployment instructions and return the final result.}"
+export AGENT_SOUL
 export AGENT_SKILLS="${AGENT_SKILLS:-}"
 export HERMES_HOME="${HERMES_HOME:-/tmp/hermes-home}"
 export HOME="${HOME:-/tmp}"
@@ -63,7 +83,7 @@ cp "$INPUT_FILE_PATH" "$workspace/$input_name"
 query=$(cat <<EOF
 ${AGENT_SOUL}
 
-Available reusable skills:
+Agent skill guidance:
 ${AGENT_SKILLS}
 
 Task:
